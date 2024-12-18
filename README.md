@@ -1,5 +1,6 @@
 # Timer App Assignment
 [Deployment 🚀](https://github.com/bifinbabu/timer)
+
 https://github.com/bifinbabu/timer
 
 ---
@@ -46,4 +47,5 @@ https://github.com/bifinbabu/timer
 ## **Contact**
 
 email: bifinbabu088@gmail.com
+
 phone: +91 8075720035
