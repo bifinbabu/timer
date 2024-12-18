@@ -1,7 +1,7 @@
 # Timer App Assignment
-[Deployment 🚀](https://github.com/bifinbabu/timer)
+[Deployment 🚀](https://timer-nine-xi.vercel.app/)
 
-https://github.com/bifinbabu/timer
+https://timer-nine-xi.vercel.app/
 
 ---
 
