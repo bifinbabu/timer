@@ -46,6 +46,6 @@ https://github.com/bifinbabu/timer
 
 ## **Contact**
 
-email: bifinbabu088@gmail.com
+E-mail: bifinbabu088@gmail.com
 
-phone: +91 8075720035
+Phone: +91 8075720035
