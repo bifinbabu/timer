@@ -20,6 +20,8 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   const intervalRef = useRef<number | null>(null);
   const timerAudio = TimerAudio.getInstance();
   const hasEndedRef = useRef(false);
+  const [isToastActive, setIsToastActive] = useState(false);
+  const audioIntervalRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (timer.isRunning) {
@@ -30,12 +32,18 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
           hasEndedRef.current = true;
           timerAudio.play().catch(console.error);
 
+          setIsToastActive(true);
           toast.success(`Timer "${timer.title}" has ended!`, {
             duration: 5000,
             action: {
               label: "Dismiss",
-              onClick: () => timerAudio.stop(),
+              onClick: () => {
+                timerAudio.stop();
+                setIsToastActive(false);
+              },
             },
+            onDismiss: () => setIsToastActive(false),
+            onAutoClose: () => setIsToastActive(false),
           });
         }
       }, 1000);
@@ -50,6 +58,27 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
     timerAudio,
     updateTimer,
   ]);
+
+  useEffect(() => {
+    if (isToastActive) {
+      console.log(`Toast for timer "${timer.title}" is alive.`);
+      audioIntervalRef.current = window.setInterval(() => {
+        timerAudio.play().catch(console.error);
+      }, 1000);
+    } else {
+      timerAudio.stop();
+      if (audioIntervalRef.current) {
+        clearInterval(audioIntervalRef.current);
+        audioIntervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (audioIntervalRef.current) {
+        clearInterval(audioIntervalRef.current);
+      }
+    };
+  }, [isToastActive, timerAudio]);
 
   const handleRestart = () => {
     hasEndedRef.current = false;
