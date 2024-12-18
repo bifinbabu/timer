@@ -2,9 +2,20 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { Timer } from "../types/timer";
 
-const initialState = {
-  timers: [] as Timer[],
+const loadState = () => {
+  const dataFromLocalStorage = localStorage.getItem("timers");
+  if (dataFromLocalStorage) {
+    return { timers: JSON.parse(dataFromLocalStorage) as Timer[] };
+  }
+  return { timers: [] as Timer[] };
 };
+
+const saveState = (state: { timers: Timer[] }) => {
+  const dataToLocalStorage = JSON.stringify(state.timers);
+  localStorage.setItem("timers", dataToLocalStorage);
+};
+
+const initialState = loadState();
 
 const timerSlice = createSlice({
   name: "timer",
@@ -16,16 +27,19 @@ const timerSlice = createSlice({
         id: crypto.randomUUID(),
         createdAt: Date.now(),
       });
+      saveState(state);
     },
     deleteTimer: (state, action) => {
       state.timers = state.timers.filter(
         (timer) => timer.id !== action.payload
       );
+      saveState(state);
     },
     toggleTimer: (state, action) => {
       const timer = state.timers.find((timer) => timer.id === action.payload);
       if (timer) {
         timer.isRunning = !timer.isRunning;
+        saveState(state);
       }
     },
     updateTimer: (state, action) => {
@@ -35,12 +49,14 @@ const timerSlice = createSlice({
           timer.isRunning = timer.remainingTime > 0;
         }
       });
+      saveState(state);
     },
     restartTimer: (state, action) => {
       const timer = state.timers.find((timer) => timer.id === action.payload);
       if (timer) {
         timer.remainingTime = timer.duration;
         timer.isRunning = false;
+        saveState(state);
       }
     },
     editTimer: (state, action) => {
@@ -51,6 +67,7 @@ const timerSlice = createSlice({
         Object.assign(timer, action.payload.updates);
         timer.remainingTime = action.payload.updates.duration || timer.duration;
         timer.isRunning = false;
+        saveState(state);
       }
     },
   },
