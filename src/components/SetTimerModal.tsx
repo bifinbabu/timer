@@ -63,6 +63,7 @@ export const SetTimerModal: React.FC<SetTimerModalProps> = ({
     e.preventDefault();
 
     if (!validateTimerForm({ title, description, hours, minutes, seconds })) {
+      //   alert("Please fill in the form correctly.");
       return;
     }
 
@@ -233,12 +234,13 @@ export const SetTimerModal: React.FC<SetTimerModalProps> = ({
             </button>
             <button
               type="submit"
-              className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${
-                isTitleValid && isTimeValid
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-blue-400 cursor-not-allowed"
+              className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors bg-blue-600 hover:bg-blue-700"${
+                // isTitleValid && isTimeValid
+                //   ? "bg-blue-600 hover:bg-blue-700"
+                //   : "bg-blue-400 cursor-not-allowed"
+                ""
               }`}
-              disabled={!isTitleValid || !isTimeValid}
+              //   disabled={!isTitleValid || !isTimeValid}
             >
               {timer ? "Save Changes" : "Add Timer"}
             </button>
